@@ -12,7 +12,7 @@ class StartScreen extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           const Text(
-            "This is BG's Quiz App",
+            "To learn you have to listen. To improve, you have to take a Quiz.",
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w700,
