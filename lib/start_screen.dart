@@ -13,6 +13,7 @@ class StartScreen extends StatelessWidget {
         children: [
           const Text(
             "To learn you have to listen. To improve, you have to take a Quiz.",
+            textAlign: TextAlign.center, // Center text within its own widget
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w700,
