@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 // The file is exported to 'quiz.dart' file => used for implementation of Start Quiz button.
 class StartScreen extends StatelessWidget {
   final void Function() quizMenu;
-  const StartScreen(this.quizMenu, {super.key});
+  final void Function() quizHistory;
+
+  const StartScreen(this.quizMenu, this.quizHistory, {super.key});
 
   @override
   Widget build(context) {
@@ -47,6 +49,22 @@ class StartScreen extends StatelessWidget {
                 foregroundColor: const Color.fromARGB(255, 255, 64, 42)),
             label: const Text(
               "Go to Quiz",
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+            ),
+            icon: const Icon(
+              Icons.wb_incandescent,
+              color: Color.fromARGB(255, 3, 107, 192),
+            ),
+          ),
+          const SizedBox(
+            height: 25,
+          ),
+          OutlinedButton.icon(
+            onPressed: quizHistory,
+            style: OutlinedButton.styleFrom(
+                foregroundColor: const Color.fromARGB(255, 255, 64, 42)),
+            label: const Text(
+              "Go to Past History",
               style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
             ),
             icon: const Icon(

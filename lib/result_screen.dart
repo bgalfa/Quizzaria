@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:quiz_app/db_model.dart';
 import 'package:quiz_app/models/question_struct.dart';
 import 'package:quiz_app/models/quiz_summary_struct.dart';
 
-// ignore: must_be_immutable
 class ResultsScreen extends StatelessWidget {
-  const ResultsScreen(
-      {super.key,
-      required this.onRestart,
-      required this.chosenAnswer,
-      required this.questions});
+  const ResultsScreen({
+    super.key,
+    required this.onRestart,
+    required this.chosenAnswer,
+    required this.questions,
+    required this.quizCategory,
+  });
+
   final List<String> chosenAnswer;
   final List<QuizQuestion> questions;
+  final String quizCategory;
   final void Function() onRestart;
+
   List<Map<String, Object>> getSummary() {
     final List<Map<String, Object>> summary = [];
     for (int i = 0; i < chosenAnswer.length; i++) {
@@ -25,15 +30,29 @@ class ResultsScreen extends StatelessWidget {
     return summary;
   }
 
+  Future<void> saveQuizResult(int correctAnswers, int totalQuestions) async {
+    final QuizSummaryModel quizSummaryModel = QuizSummaryModel(
+      id: DateTime.now().millisecondsSinceEpoch, // Unique ID based on timestamp
+      quizCategory: quizCategory,
+      score: correctAnswers,
+    );
+    await quizSummaryModel
+        .insertSummary(); // Call the database insertion method
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<Map<String, Object>> summary = getSummary();
-    var totalQuestions = chosenAnswer.length;
-    var correctAnswers = summary.where(
-      (lst) {
-        return lst['chosenAnswer'] == lst['correctAnswer'];
-      },
-    ).length;
+    final List<Map<String, Object>> summary = getSummary();
+    final int totalQuestions = chosenAnswer.length;
+    final int correctAnswers = summary
+        .where(
+          (lst) => lst['chosenAnswer'] == lst['correctAnswer'],
+        )
+        .length;
+
+    // Save the result to the database
+    saveQuizResult(correctAnswers, totalQuestions);
+
     return SizedBox(
       width: double.infinity,
       child: Container(
@@ -77,7 +96,7 @@ class ResultsScreen extends StatelessWidget {
                 "Restart Quiz",
                 style: TextStyle(fontSize: 18),
               ),
-            )
+            ),
           ],
         ),
       ),

@@ -7,6 +7,7 @@ import 'package:quiz_app/questions/more_qs.dart';
 import 'package:quiz_app/questions_screen.dart';
 import 'package:quiz_app/result_screen.dart';
 import 'package:quiz_app/start_screen.dart';
+import 'package:quiz_app/history_screen.dart';
 // import 'package:quiz_app/questions/quiz_questions.dart';
 
 //The main file that conains the Quiz App Widgets
@@ -27,6 +28,12 @@ class _QuizState extends State<Quiz> {
   void gotoQuizMenu() {
     setState(() {
       activeScreen = 'quiz-menu';
+    });
+  }
+
+  void gotoQuizHistory() {
+    setState(() {
+      activeScreen = 'quiz-history';
     });
   }
 
@@ -71,12 +78,18 @@ class _QuizState extends State<Quiz> {
 
   @override
   Widget build(context) {
-    Widget screenWidget = StartScreen(gotoQuizMenu);
+    Widget screenWidget = StartScreen(gotoQuizMenu, gotoQuizHistory);
     if (activeScreen == 'quiz-menu') {
       screenWidget = Category(
         onSelectCategory: onSelectCategory,
       );
     }
+    if (activeScreen == 'quiz-history') {
+      screenWidget = HistoryScreen(
+        onBackToStart: restartQuiz, // Navigate back to StartScreen
+      );
+    }
+
     if (activeScreen == 'questions-screen') {
       screenWidget = QuestionsScreen(
         onSelectAnswer: chosenAnswer,
@@ -88,6 +101,7 @@ class _QuizState extends State<Quiz> {
         questions: questions,
         chosenAnswer: selectedAnswers,
         onRestart: restartQuiz,
+        quizCategory: chosenGenre,
       );
     }
     return MaterialApp(
